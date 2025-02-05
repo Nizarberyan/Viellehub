@@ -9,6 +9,7 @@
     "config": {
         "allow-plugins": {
             "php-http/discovery": true
-        }
+        },
+        "document-root": "public"
     }
 }
