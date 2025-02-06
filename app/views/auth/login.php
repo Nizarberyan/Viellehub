@@ -1,3 +1,7 @@
+<?php
+require_once '../../models/Student.php';
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,7 +18,7 @@
                 Login
             </h2>
 
-            <form action="#" method="POST" class="space-y-4">
+            <form action="" method="POST" class="space-y-4">
                 <div>
                     <label for="email" class="block text-gray-700 text-sm font-bold mb-2">
                         Email Address
