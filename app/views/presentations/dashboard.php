@@ -1,11 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" x-data="{}"> <!-- Add x-data on the html tag or a parent element for Alpine.js -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Presentations Dashboard</title>
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Alpine.js (required for the dropdown) -->
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Remix Icon -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">
@@ -15,31 +24,73 @@
         <div class="p-6 border-b">
             <h2 class="text-2xl font-bold text-blue-600">Presentations</h2>
         </div>
+        <!-- New Sidebar Code -->
         <nav class="p-4">
             <ul class="space-y-2">
                 <li>
-                    <a href="#" class="flex items-center p-2 text-blue-600 bg-blue-50 rounded-lg">
-                        <i class="ri-presentation-line mr-3"></i>
-                        <span>Dashboard</span>
+                    <a
+                            href="../presentations/dashboard.php"
+                            class="flex items-center p-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors"
+                    >
+                        <i class="ri-dashboard-line mr-3 text-xl"></i>
+                        <span class="font-medium">Dashboard</span>
                     </a>
                 </li>
                 <li>
-                    <a href="my-presentations.php" class="flex items-center p-2 text-gray-600 hover:bg-gray-100 rounded-lg">
-                        <i class="ri-slideshow-line mr-3"></i>
-                        <span>My Presentations</span>
+                    <a
+                            href="../presentations/calendar.php"
+                            class="flex items-center p-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors"
+                    >
+                        <i class="ri-calendar-2-line mr-3 text-xl"></i>
+                        <span class="font-medium">Calendar</span>
                     </a>
                 </li>
-                <li>
-                    <a href="create-presentation.php" class="flex items-center p-2 text-gray-600 hover:bg-gray-100 rounded-lg">
-                        <i class="ri-add-circle-line mr-3"></i>
-                        <span>Create New</span>
+
+                <!-- Subjects Dropdown -->
+                <li x-data="{ open: true }" class="relative">
+                    <a
+                            href="#"
+                            @click.prevent="open = !open"
+                            class="flex items-center p-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors bg-blue-50 text-blue-600"
+                    >
+                        <i class="ri-book-open-line mr-3 text-xl"></i>
+                        <span class="font-medium">Subjects</span>
+                        <i
+                                x-bind:class="open ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line'"
+                                class="ml-auto text-xl"
+                        ></i>
                     </a>
-                </li>
-                <li>
-                    <a href="archived-presentations.php" class="flex items-center p-2 text-gray-600 hover:bg-gray-100 rounded-lg">
-                        <i class="ri-archive-line mr-3"></i>
-                        <span>Archived</span>
-                    </a>
+
+                    <ul
+                            x-show="open"
+                            x-transition
+                            class="pl-6 space-y-2 mt-2 border-l-2 border-gray-100"
+                    >
+                        <li>
+                            <a
+                                    href="list.php"
+                                    class="block p-2 text-sm text-gray-600 hover:text-blue-600"
+                            >
+                                Subject List
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                    href="manage.php"
+                                    class="block p-2 text-sm text-gray-600 hover:text-blue-600"
+                            >
+                                Manage Subjects
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                    href="suggest.php"
+                                    class="block p-2 text-sm text-gray-600 hover:text-blue-600"
+                            >
+                                Suggest Subject
+                            </a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </nav>

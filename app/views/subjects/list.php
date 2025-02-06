@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Subject Selection</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
@@ -10,7 +10,7 @@
 <body class="bg-gray-100">
 <div class="flex min-h-screen">
     <!-- Sidebar -->
-    <div class="w-64 bg-white shadow-md fixed left-0 top-0 bottom-0">
+    <div class="w-64 bg-white shadow-md fixed left-0 top-0 bottom-0 overflow-y-auto">
         <!-- Logo and Branding -->
         <div class="p-6 border-b flex items-center justify-center">
             <img src="../../../public/logo-white.png" alt="School Logo" class="h-12 w-auto">
@@ -102,11 +102,16 @@
                                 type="text"
                                 id="searchSubjects"
                                 placeholder="Search subjects..."
+                                aria-label="Search subjects"
                                 class="pl-10 pr-4 py-2 rounded-lg border w-64"
                         >
                         <i class="ri-search-line absolute left-3 top-3 text-gray-400"></i>
                     </div>
-                    <select id="departmentFilter" class="px-3 py-2 border rounded-lg">
+                    <select
+                            id="departmentFilter"
+                            aria-label="Filter subjects by department"
+                            class="px-3 py-2 border rounded-lg"
+                    >
                         <option value="">All Departments</option>
                         <option value="computer-science">Computer Science</option>
                         <option value="mathematics">Mathematics</option>
@@ -118,16 +123,29 @@
 
             <!-- Grid of subjects -->
             <div id="subjectsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- .subject-card elements go here, each with .select-subject-btn -->
+                <!-- Dynamically populated subject cards will go here -->
+                <div class="subject-card bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-xl font-bold mb-2">Software Engineering</h2>
+                    <span class="text-sm text-gray-500">Computer Science</span>
+                    <button
+                            class="select-subject-btn mt-4 w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+                            data-subject-name="Software Engineering"
+                    >
+                        Select Subject
+                    </button>
+                </div>
+                <!-- Add more subject cards as needed -->
             </div>
 
             <!-- Subject Selection Modal -->
             <div
                     id="selectionModal"
                     class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 items-center justify-center z-50"
+                    role="dialog"
+                    aria-labelledby="selectionModalTitle"
             >
                 <div class="bg-white p-6 rounded shadow-lg w-full max-w-md">
-                    <h2 class="text-xl font-bold mb-4">
+                    <h2 id="selectionModalTitle" class="text-xl font-bold mb-4">
                         Confirm Selection
                     </h2>
                     <p class="mb-4">
@@ -149,37 +167,22 @@
                                 id="teamNameInput"
                                 class="w-full px-3 py-2 border rounded"
                                 placeholder="Enter your team name"
+                                required
                         />
                     </div>
 
-                    <!-- Example member selection -->
+                    <!-- Team Member Selection -->
                     <div class="mb-4">
                         <label class="block font-medium mb-1">
                             Select Team Members:
                         </label>
-                        <div>
-                            <input
-                                    type="checkbox"
-                                    class="team-member-checkbox"
-                                    data-name="John"
-                            />
-                            <span>John</span>
-                        </div>
-                        <div>
-                            <label>
-                                <input
-                                        type="checkbox"
-                                        class="team-member-checkbox"
-                                        data-name="Alice"
-                                />
-                            </label>
-                            <span>Alice</span>
+                        <div id="teamMembersContainer">
+                            <!-- Team members will be dynamically populated -->
                         </div>
                     </div>
 
                     <!-- Modal Buttons -->
                     <div class="flex justify-end space-x-2">
-                        <!-- The cancel button must have "cancelSelectionBtn" as its ID -->
                         <button
                                 id="cancelSelectionBtn"
                                 class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
@@ -195,7 +198,6 @@
                     </div>
                 </div>
             </div>
-            <!-- End of Subject Selection Modal -->
         </div>
     </div>
 </div>
@@ -205,7 +207,18 @@
 
 <!-- JavaScript for Subject Selection -->
 <script>
-    // Subject Selection Modal Handling
+    // Utility Functions
+    function debounce(func, delay) {
+        let timeoutId;
+        return function() {
+            const context = this;
+            const args = arguments;
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => func.apply(context, args), delay);
+        };
+    }
+
+    // DOM Elements
     const selectSubjectBtns = document.querySelectorAll('.select-subject-btn');
     const selectionModal = document.getElementById('selectionModal');
     const cancelSelectionBtn = document.getElementById('cancelSelectionBtn');
@@ -213,39 +226,64 @@
     const selectedSubjectTitle = document.getElementById('selectedSubjectTitle');
     const selectedSubjectDepartment = document.getElementById('selectedSubjectDepartment');
     const teamNameInput = document.getElementById('teamNameInput');
+    const teamMembersContainer = document.getElementById('teamMembersContainer');
 
-    // Event listeners for subject selection
+    // Simulate team members (in real app, this would come from backend)
+    const teamMembers = [
+        { id: 1, name: 'John Doe' },
+        { id: 2, name: 'Alice Smith' },
+        { id: 3, name: 'Bob Johnson' },
+        { id: 4, name: 'Emma Brown' }
+    ];
+
+    // Populate Team Members
+    function populateTeamMembers() {
+        teamMembersContainer.innerHTML = teamMembers.map(member => `
+            <div class="flex items-center mb-2">
+                <input
+                    type="checkbox"
+                    id="member-${member.id}"
+                    class="team-member-checkbox mr-2"
+                    data-name="${member.name}"
+                    value="${member.id}"
+                >
+                <label for="member-${member.id}">${member.name}</label>
+            </div>
+        `).join('');
+    }
+
+    // Event Listeners
     selectSubjectBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             const subjectName = btn.dataset.subjectName;
-            selectedSubjectTitle.textContent = subjectName;
+            const departmentName = btn.closest('.subject-card').querySelector('span').textContent;
 
-            // Typically fetch the department dynamically if needed
-            selectedSubjectDepartment.textContent = 'Computer Science Department';
+            selectedSubjectTitle.textContent = subjectName;
+            selectedSubjectDepartment.textContent = departmentName;
+
+            populateTeamMembers();
 
             selectionModal.classList.remove('hidden');
             selectionModal.classList.add('flex');
         });
     });
 
-    // Cancel modal
     cancelSelectionBtn.addEventListener('click', () => {
         selectionModal.classList.remove('flex');
         selectionModal.classList.add('hidden');
     });
 
-    // Submit selection
     submitSelectionBtn.addEventListener('click', () => {
         const selectedMembers = document.querySelectorAll('.team-member-checkbox:checked');
         const teamName = teamNameInput.value.trim();
 
         if (selectedMembers.length < 2) {
-            alert('Please select at least 2 team members');
+            alert('You need at least 2 team members to form a team.');
             return;
         }
 
         if (!teamName) {
-            alert('Please enter a team name');
+            alert('Please provide a unique team name.');
             return;
         }
 
@@ -257,13 +295,17 @@
             members: memberNames
         };
 
-        // Simulated submit
-        console.log('Submission Data:', submissionData);
-        alert('Subject submission sent for teacher approval!');
+        // Simulated submission with better error handling
+        try {
+            console.log('Submission Data:', submissionData);
+            alert('Subject submission sent for teacher approval!');
 
-        // Close modal
-        selectionModal.classList.remove('flex');
-        selectionModal.classList.add('hidden');
+            selectionModal.classList.remove('flex');
+            selectionModal.classList.add('hidden');
+        } catch (error) {
+            console.error('Submission error:', error);
+            alert('Failed to submit. Please try again.');
+        }
     });
 
     // Search and Filter Functionality
@@ -272,22 +314,23 @@
 
     function filterSubjects() {
         const searchTerm = searchInput.value.toLowerCase();
-        const selectedDepartment = departmentFilter.value;
+        const selectedDepartment = departmentFilter.value.toLowerCase();
         const subjectCards = document.querySelectorAll('.subject-card');
 
         subjectCards.forEach(card => {
             const subjectName = card.querySelector('h2').textContent.toLowerCase();
             const departmentTag = card.querySelector('span').textContent.toLowerCase();
+
             const matchesSearch = subjectName.includes(searchTerm);
-            const matchesDepartment =
-                !selectedDepartment ||
-                departmentTag.includes(selectedDepartment);
+            const matchesDepartment = !selectedDepartment || departmentTag.includes(selectedDepartment);
 
             card.style.display = (matchesSearch && matchesDepartment) ? 'block' : 'none';
         });
     }
 
-    searchInput.addEventListener('input', filterSubjects);
+    const debouncedFilterSubjects = debounce(filterSubjects, 300);
+
+    searchInput.addEventListener('input', debouncedFilterSubjects);
     departmentFilter.addEventListener('change', filterSubjects);
 </script>
 </body>
