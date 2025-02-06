@@ -33,8 +33,8 @@
     <!-- Sidebar -->
     <div
             class="fixed inset-y-0 left-0 z-40 w-64 bg-white shadow-md transform transition-transform duration-300
-               md:relative md:translate-x-0 md:w-64 md:block"
-            :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
+           md:relative md:w-64"
+            :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'"
             x-transition:enter="transition ease-out duration-300"
             x-transition:enter-start="opacity-0 -translate-x-full"
             x-transition:enter-end="opacity-100 translate-x-0"
@@ -50,12 +50,12 @@
             <i class="ri-close-line text-2xl"></i>
         </button>
 
-        <!-- Sidebar title for larger screens -->
-        <div class="p-6 border-b hidden md:block">
-            <h2 class="text-2xl font-bold text-blue-600">Presentations</h2>
+        <!-- Logo and Branding -->
+        <div class="p-6 border-b flex items-center justify-center">
+            <img src="../../../public/logo-white.png" alt="School Logo" class="h-12 w-auto">
         </div>
 
-        <!-- Sidebar Navigation -->
+        <!-- Navigation Menu -->
         <nav class="p-4">
             <ul class="space-y-2">
                 <li>
@@ -67,18 +67,64 @@
                         <span class="font-medium">Dashboard</span>
                     </a>
                 </li>
-                <!-- Additional items or dropdowns can be added here -->
+                <li>
+                    <a
+                            href="../presentations/calendar.php"
+                            class="flex items-center p-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors"
+                    >
+                        <i class="ri-calendar-2-line mr-3 text-xl"></i>
+                        <span class="font-medium">Calendar</span>
+                    </a>
+                </li>
+
+                <!-- Subjects Dropdown -->
+                <li x-data="{ open: true }" class="relative">
+                    <a
+                            href="#"
+                            @click.prevent="open = !open"
+                            class="flex items-center p-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors bg-blue-50 text-blue-600"
+                    >
+                        <i class="ri-book-open-line mr-3 text-xl"></i>
+                        <span class="font-medium">Subjects</span>
+                        <i
+                                :class="open ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line'"
+                                class="ml-auto text-xl"
+                        ></i>
+                    </a>
+                    <ul
+                            x-show="open"
+                            x-transition
+                            class="pl-6 space-y-2 mt-2 border-l-2 border-gray-100"
+                    >
+                        <li>
+                            <a
+                                    href="../subjects/list.php"
+                                    class="block p-2 text-sm text-gray-600 hover:text-blue-600"
+                            >
+                                Subject List
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                    href="../subjects/manage.php"
+                                    class="block p-2 text-sm text-gray-600 hover:text-blue-600"
+                            >
+                                Manage Subjects
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                    href="../subjects/suggest.php"
+                                    class="block p-2 text-sm text-gray-600 hover:text-blue-600"
+                            >
+                                Suggest Subject
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </nav>
     </div>
-
-    <!-- Overlay for Mobile Sidebar -->
-    <div
-            x-show="sidebarOpen"
-            x-transition.opacity
-            @click="sidebarOpen = false"
-            class="fixed inset-0 bg-black/50 z-30 md:hidden"
-    ></div>
 
     <!-- Main Content -->
     <div class="flex-1 p-4 md:p-10 overflow-x-hidden">
@@ -120,12 +166,14 @@
         </div>
 
         <!-- Presentations by Department (Dummy Data) -->
-        <div class="bg-white p-4 md:p-6 rounded-lg shadow-md mt-8 max-w-4xl mx-auto">
+        <div class="bg-white p-4 md:p-6 rounded-lg shadow-md mt-8 max-w-screen-lg mx-auto">
+            <!-- Headline -->
             <h3 class="text-xl font-semibold mb-4">Presentations by Department</h3>
+
+            <!-- Responsive Table -->
             <table class="table-fixed w-full">
                 <thead class="bg-gray-50">
                 <tr>
-                    <!-- Fixed widths to keep columns aligned and date within bounds -->
                     <th class="px-4 py-2 text-left text-gray-600 font-medium w-1/4">Department</th>
                     <th class="px-4 py-2 text-left text-gray-600 font-medium w-1/4">Presenter</th>
                     <th class="px-4 py-2 text-left text-gray-600 font-medium w-1/3">Title</th>
