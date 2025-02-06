@@ -24,7 +24,7 @@ try {
 
     //Recipients
     $mail->setFrom('support@nizarberiane.me', 'Mailer');
-    $mail->addAddress('badrnewacc@gmail.com', 'Ana');     //Add a recipient
+    $mail->addAddress('', 'Ana');     //Add a recipient
 
     $mail->addReplyTo('nizarberiane5@nizarberiane.me', 'Information');
 

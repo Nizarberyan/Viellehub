@@ -3,6 +3,5 @@
 # Ignore Composer vendor directory
 /vendor/
 
-# Ignore Composer lock file
 
 \*.txt
