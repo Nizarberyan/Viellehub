@@ -18,17 +18,11 @@
                 <p class="text-gray-600 mb-6">
                     Optimize daily educational rituals and streamline technical subject presentations for students and teachers.
                 </p>
-                <div class="flex flex-col space-y-4 max-w-xs">
-                    <a
-                            href="app/views/auth/login.php"
-                            class="w-full inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded text-center"
-                    >
+                <div class="space-y-4">
+                    <a href="app/views/auth/login.php" class="w-full block text-center bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-300 font-semibold">
                         Login
                     </a>
-                    <a
-                            href="app/views/auth/register.php"
-                            class="w-full inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded text-center"
-                    >
+                    <a href="app/views/auth/register.php" class="w-full block text-center bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition duration-300 font-semibold">
                         Register
                     </a>
                 </div>
