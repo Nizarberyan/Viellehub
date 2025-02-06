@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" x-data="{ sidebarOpen: false }">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +15,10 @@
 
 <div class="flex min-h-screen">
     <!-- Sidebar -->
-    <div class="w-64 bg-white shadow-md">
+    <div
+            class="fixed inset-y-0 left-0 z-30 w-64 bg-white shadow-md transform transition-transform duration-200
+               md:static md:translate-x-0"
+            :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'">
         <div class="p-6 border-b">
             <h2 class="text-2xl font-bold text-blue-600">Menu</h2>
         </div>
@@ -89,7 +92,18 @@
     </div>
 
     <!-- Main Content -->
-    <div class="flex-1">
+    <!-- Hamburger button for mobile -->
+    <div class="flex-1 md:ml-64">
+        <header class="md:hidden flex items-center bg-white shadow p-4">
+            <button
+                    class="text-gray-700 focus:outline-none"
+                    @click="sidebarOpen = !sidebarOpen"
+            >
+                <i class="ri-menu-line text-2xl"></i>
+            </button>
+            <h2 class="ml-4 text-xl font-bold text-blue-600">Subject Suggestion System</h2>
+        </header>
+
         <div class="container mx-auto px-4 py-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Student Suggestion Column -->

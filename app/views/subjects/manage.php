@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" x-data="{ sidebarOpen: false }">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Subjects Management</title>
 
     <!-- Tailwind CSS -->
@@ -15,10 +15,26 @@
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
 <body class="bg-gray-100">
-<div class="flex min-h-screen">
+<div class="flex flex-col min-h-screen md:flex-row">
+
+    <!-- Mobile Header / Toggle -->
+    <header class="flex items-center justify-between bg-white shadow-md p-4 md:hidden">
+        <h2 class="text-xl font-bold text-blue-600">Menu</h2>
+        <button
+                class="text-gray-600 focus:outline-none"
+                @click="sidebarOpen = !sidebarOpen"
+                aria-label="Toggle sidebar"
+        >
+            <i class="ri-menu-line text-2xl"></i>
+        </button>
+    </header>
+
     <!-- Sidebar -->
-    <div class="w-64 bg-white shadow-md">
-        <div class="p-6 border-b">
+    <div
+            class="fixed inset-y-0 left-0 w-64 bg-white shadow-md transform md:transform-none md:relative z-30 transition-transform duration-200"
+            :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
+    >
+        <div class="p-6 border-b md:border-none">
             <h2 class="text-2xl font-bold text-blue-600">Menu</h2>
         </div>
         <nav class="p-4">
@@ -41,7 +57,6 @@
                         <span class="font-medium">Calendar</span>
                     </a>
                 </li>
-
                 <!-- Subjects Dropdown -->
                 <li x-data="{ open: true }" class="relative">
                     <a
@@ -92,9 +107,9 @@
     </div>
 
     <!-- Main Content -->
-    <div class="flex-1 p-10">
+    <div class="flex-1 p-4 md:p-10 mt-16 md:mt-0">
         <!-- Header -->
-        <div class="flex justify-between items-center mb-8">
+        <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-8 gap-4">
             <h1 class="text-3xl font-bold text-gray-800">Subjects Management</h1>
             <div class="flex items-center space-x-4">
                 <div class="relative">
@@ -102,11 +117,13 @@
                             type="text"
                             id="searchSubjects"
                             placeholder="Search subjects..."
-                            class="pl-10 pr-4 py-2 rounded-lg border w-64"
+                            class="pl-10 pr-4 py-2 rounded-lg border w-full md:w-64"
                     >
                     <i class="ri-search-line absolute left-3 top-3 text-gray-400"></i>
                 </div>
-                <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 flex items-center create-subject">
+                <button
+                        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 flex items-center create-subject"
+                >
                     <i class="ri-add-line mr-2"></i>
                     Create Subject
                 </button>
@@ -145,10 +162,10 @@
         </div>
 
         <!-- Subjects List -->
-        <div class="bg-white rounded-lg shadow-md">
-            <div class="p-6 border-b flex justify-between items-center">
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="p-6 border-b flex flex-col gap-4 md:flex-row md:justify-between md:items-center">
                 <h2 class="text-xl font-semibold">Subject List</h2>
-                <div class="flex items-center space-x-4">
+                <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
                     <select class="px-3 py-2 border rounded-lg text-sm">
                         <option>All Departments</option>
                         <option>Computer Science</option>
@@ -213,8 +230,12 @@
                         </td>
                         <td class="p-4 text-sm text-gray-500">
                             <div class="flex -space-x-2">
-                                <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white" src="https://randomuser.me/api/portraits/men/1.jpg" alt=""/>
-                                <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white" src="https://randomuser.me/api/portraits/women/2.jpg" alt=""/>
+                                <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white"
+                                     src="https://randomuser.me/api/portraits/men/1.jpg"
+                                     alt=""/>
+                                <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white"
+                                     src="https://randomuser.me/api/portraits/women/2.jpg"
+                                     alt=""/>
                                 <span class="ml-2 text-gray-500">+3 more</span>
                             </div>
                         </td>
@@ -243,8 +264,8 @@
             </div>
 
             <!-- Pagination -->
-            <div class="p-4 bg-white border-t flex justify-between items-center">
-                <div class="text-sm text-gray-600">
+            <div class="p-4 bg-white border-t flex flex-col sm:flex-row justify-between items-center text-sm space-y-2 sm:space-y-0">
+                <div class="text-gray-600">
                     Showing 1-10 of 42 subjects
                 </div>
                 <div class="flex space-x-2">
@@ -293,8 +314,16 @@
 </div>
 
 <script>
+    // Toggle sidebar on smaller screens
+    window.addEventListener('resize', () => {
+        if (window.innerWidth >= 768) {
+            // Ensure sidebar is shown on larger screens
+            document.querySelector('body').__x.$data.sidebarOpen = false;
+        }
+    });
+
     // Quick Actions Modal Handling
-    const quickActionsBtn = document.querySelector('button[class*="create-subject"]');
+    const quickActionsBtn = document.querySelector('button.create-subject');
     const quickActionsModal = document.getElementById('quickActionsModal');
     const closeQuickActionsModal = document.getElementById('closeQuickActionsModal');
 
@@ -312,7 +341,7 @@
     const searchInput = document.getElementById('searchSubjects');
     searchInput.addEventListener('input', (e) => {
         const searchTerm = e.target.value.toLowerCase();
-        // You can implement proper search/filter logic here
+        // Implement your search/filter logic here
         console.log('Searching for:', searchTerm);
     });
 </script>

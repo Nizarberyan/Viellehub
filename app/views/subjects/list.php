@@ -1,16 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" x-data="{ sidebarOpen: false }">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Ensure the viewport is configured for mobile devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Subject Selection</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <!-- Alpine.js for Dropdown + Sidebar Toggle -->
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
 <body class="bg-gray-100">
-<div class="flex min-h-screen">
+
+<!-- Mobile Header (hamburger menu button) -->
+<header class="bg-white shadow p-4 flex items-center justify-between md:hidden">
+    <div class="text-xl font-bold">Subject Selection</div>
+    <button
+            @click="sidebarOpen = !sidebarOpen"
+            class="text-gray-600 focus:outline-none"
+            aria-label="Toggle Sidebar"
+    >
+        <i class="ri-menu-line text-2xl"></i>
+    </button>
+</header>
+
+<!-- Main Wrapper: stacks for small screens, side-by-side for md+ screens -->
+<div class="flex min-h-screen flex-col md:flex-row">
+
     <!-- Sidebar -->
-    <div class="w-64 bg-white shadow-md fixed left-0 top-0 bottom-0 overflow-y-auto">
+    <div
+            :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
+            class="transform md:transform-none duration-300 fixed md:static w-64 bg-white shadow-md left-0 top-0 bottom-0 overflow-y-auto z-50"
+    >
         <!-- Logo and Branding -->
         <div class="p-6 border-b flex items-center justify-center">
             <img src="../../../public/logo-white.png" alt="School Logo" class="h-12 w-auto">
@@ -48,7 +69,7 @@
                         <i class="ri-book-open-line mr-3 text-xl"></i>
                         <span class="font-medium">Subjects</span>
                         <i
-                                x-bind:class="open ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line'"
+                                :class="open ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line'"
                                 class="ml-auto text-xl"
                         ></i>
                     </a>
@@ -89,28 +110,36 @@
     </div>
 
     <!-- Main Content Area -->
-    <div class="ml-64 flex-1 p-8">
+    <!-- Add top padding (pt-16) on small screens to avoid content being hidden behind the mobile header.
+         Remove left margin (ml-64) for small screens; keep it for md+ screens. -->
+    <div class="flex-1 p-8 pt-16 md:pt-8 md:ml-64">
         <div class="container mx-auto">
-            <div class="flex justify-between items-center mb-8">
-                <h1 class="text-3xl font-bold text-gray-800">
+            <div class="flex flex-wrap items-center gap-4 mb-8">
+                <!-- Title -->
+                <h1 class="text-3xl font-bold text-gray-800 flex items-center mb-4 sm:mb-0">
                     <i class="ri-book-line mr-3 text-blue-600"></i>
                     Available Subjects
                 </h1>
-                <div class="flex items-center space-x-4">
-                    <div class="relative">
+
+                <!-- Right Section: Search and Department Filter -->
+                <div class="flex flex-wrap sm:flex-nowrap items-center gap-4">
+                    <!-- Search box -->
+                    <div class="relative w-full sm:w-auto">
                         <input
                                 type="text"
                                 id="searchSubjects"
                                 placeholder="Search subjects..."
                                 aria-label="Search subjects"
-                                class="pl-10 pr-4 py-2 rounded-lg border w-64"
+                                class="w-full pl-10 pr-4 py-2 rounded-lg border"
                         >
                         <i class="ri-search-line absolute left-3 top-3 text-gray-400"></i>
                     </div>
+
+                    <!-- Department dropdown -->
                     <select
                             id="departmentFilter"
                             aria-label="Filter subjects by department"
-                            class="px-3 py-2 border rounded-lg"
+                            class="px-3 py-2 border rounded-lg w-full sm:w-auto max-w-xs"
                     >
                         <option value="">All Departments</option>
                         <option value="computer-science">Computer Science</option>
@@ -202,9 +231,6 @@
     </div>
 </div>
 
-<!-- Alpine.js for Dropdown Functionality -->
-<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-
 <!-- JavaScript for Subject Selection -->
 <script>
     // Utility Functions
@@ -228,7 +254,7 @@
     const teamNameInput = document.getElementById('teamNameInput');
     const teamMembersContainer = document.getElementById('teamMembersContainer');
 
-    // Simulate team members (in real app, this would come from backend)
+    // Simulate team members (in real app, this might come from a backend)
     const teamMembers = [
         { id: 1, name: 'John Doe' },
         { id: 2, name: 'Alice Smith' },
@@ -236,23 +262,22 @@
         { id: 4, name: 'Emma Brown' }
     ];
 
-    // Populate Team Members
     function populateTeamMembers() {
         teamMembersContainer.innerHTML = teamMembers.map(member => `
-            <div class="flex items-center mb-2">
-                <input
-                    type="checkbox"
-                    id="member-${member.id}"
-                    class="team-member-checkbox mr-2"
-                    data-name="${member.name}"
-                    value="${member.id}"
-                >
-                <label for="member-${member.id}">${member.name}</label>
-            </div>
-        `).join('');
+        <div class="flex items-center mb-2">
+            <input
+                type="checkbox"
+                id="member-${member.id}"
+                class="team-member-checkbox mr-2"
+                data-name="${member.name}"
+                value="${member.id}"
+            >
+            <label for="member-${member.id}">${member.name}</label>
+        </div>
+    `).join('');
     }
 
-    // Event Listeners
+    // Show modal
     selectSubjectBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             const subjectName = btn.dataset.subjectName;
@@ -268,11 +293,13 @@
         });
     });
 
+    // Hide modal (cancel)
     cancelSelectionBtn.addEventListener('click', () => {
         selectionModal.classList.remove('flex');
         selectionModal.classList.add('hidden');
     });
 
+    // Submit subject selection
     submitSelectionBtn.addEventListener('click', () => {
         const selectedMembers = document.querySelectorAll('.team-member-checkbox:checked');
         const teamName = teamNameInput.value.trim();
@@ -291,15 +318,16 @@
 
         const submissionData = {
             subjectName: selectedSubjectTitle.textContent,
-            teamName: teamName,
+            teamName,
             members: memberNames
         };
 
-        // Simulated submission with better error handling
         try {
+            // In a real app, you'd likely send this to the server via fetch/axios/etc.
             console.log('Submission Data:', submissionData);
             alert('Subject submission sent for teacher approval!');
 
+            // Close modal
             selectionModal.classList.remove('flex');
             selectionModal.classList.add('hidden');
         } catch (error) {
@@ -308,7 +336,7 @@
         }
     });
 
-    // Search and Filter Functionality
+    // Search + Filter
     const searchInput = document.getElementById('searchSubjects');
     const departmentFilter = document.getElementById('departmentFilter');
 
@@ -322,14 +350,15 @@
             const departmentTag = card.querySelector('span').textContent.toLowerCase();
 
             const matchesSearch = subjectName.includes(searchTerm);
-            const matchesDepartment = !selectedDepartment || departmentTag.includes(selectedDepartment);
+            const matchesDepartment =
+                !selectedDepartment || departmentTag.includes(selectedDepartment);
 
-            card.style.display = (matchesSearch && matchesDepartment) ? 'block' : 'none';
+            card.style.display =
+                matchesSearch && matchesDepartment ? 'block' : 'none';
         });
     }
 
     const debouncedFilterSubjects = debounce(filterSubjects, 300);
-
     searchInput.addEventListener('input', debouncedFilterSubjects);
     departmentFilter.addEventListener('change', filterSubjects);
 </script>
