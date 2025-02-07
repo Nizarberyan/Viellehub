@@ -139,7 +139,7 @@ session_start();
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_GET['method']) && $_GET['method'] == 'register') {
-    // Additional form validation
+   
     if (!isset($_POST['terms'])) {
         $_SESSION['error'] = "You must agree to the Terms and Conditions.";
         header('Location: ../views/auth/register.php');
@@ -164,6 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_GET['method']) && $_GET['met
 
     if ($result) {
         unset($_SESSION['error']);
+        
         $_SESSION['success'] = "Registration successful. Please log in.";
         header('Location: ../views/auth/login.php');
         exit();

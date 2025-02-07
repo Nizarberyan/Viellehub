@@ -24,7 +24,7 @@ class Database
 
         try {
             $this->connection = new PDO($dsn, $this->user, $this->password, $options);
-            echo "Connected successfully with SSL!";
+            
         } catch (PDOException $e) {
             die("Connection failed: " . $e->getMessage());
         }
