@@ -1,19 +1,34 @@
 <?php
 
-class database
+class Database
 {
-    private $host = "localhost";
-    private $user = "root";
-
-    private $password = "nizar123";
-
+    private $host = "nizar.mysql.database.azure.com";
+    private $port = "3306";
+    private $user = "nizar";
+    private $password = "nizar.mysql.database.azure.com";
     private $database = "veillehub";
+    private $ssl_ca = "/DigiCertGlobalRootCA.crt.pem";
     public $connection;
 
     public function __construct()
     {
-        $this->connection = new PDO ("mysql:host=$this->host;dbname=$this->database", $this->user, $this->password);
-        $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    }
+        $dsn = "mysql:host=$this->host;port=$this->port;dbname=$this->database;charset=utf8mb4";
 
+        $options = [
+            PDO::MYSQL_ATTR_SSL_CA      => $this->ssl_ca, // Enable SSL
+            PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false, // Set to true for stronger security
+            PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES  => false,
+        ];
+
+        try {
+            $this->connection = new PDO($dsn, $this->user, $this->password, $options);
+            echo "Connected successfully with SSL!";
+        } catch (PDOException $e) {
+            die("Connection failed: " . $e->getMessage());
+        }
+    }
 }
+
+?>
