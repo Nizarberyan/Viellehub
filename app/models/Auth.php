@@ -51,9 +51,9 @@ class Auth
 
             return true;
         } catch (PDOException $e) {
-            // Log error
+
             error_log('User creation error: ' . $e->getMessage());
-            $_SESSION['error'] = "Registration failed. Please try again.";
+            $_SESSION['error'] = $e->getMessage();
             return false;
         }
     }
@@ -139,20 +139,6 @@ session_start();
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_GET['method']) && $_GET['method'] == 'register') {
-   
-    if (!isset($_POST['terms'])) {
-        $_SESSION['error'] = "You must agree to the Terms and Conditions.";
-        header('Location: ../views/auth/register.php');
-        exit();
-    }
-
-
-    if ($_POST['password'] !== $_POST['confirm_password']) {
-        $_SESSION['error'] = "Passwords do not match.";
-        header('Location: ../views/auth/register.php');
-        exit();
-    }
-
     $auth = new Auth();
     $result = $auth->CreateUser(
         $_POST['email'],
@@ -163,12 +149,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_GET['method']) && $_GET['met
     );
 
     if ($result) {
+
         unset($_SESSION['error']);
-        
         $_SESSION['success'] = "Registration successful. Please log in.";
         header('Location: ../views/auth/login.php');
         exit();
     } else {
+
         header('Location: ../views/auth/register.php');
         exit();
     }
@@ -194,7 +181,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_GET['method']) && $_GET['met
         }
         exit();
     } else {
-        die (var_dump($_SESSION['error']));
 
         header('Location: ../views/auth/login.php');
         exit();
