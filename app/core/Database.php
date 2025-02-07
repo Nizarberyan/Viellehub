@@ -3,11 +3,11 @@
 class database
 {
     private $host = "localhost";
-    private $user = "nizar";
+    private $user = "root";
 
     private $password = "nizar123";
 
-    private $database = "VeilleHub";
+    private $database = "veillehub";
     public $connection;
 
     public function __construct()

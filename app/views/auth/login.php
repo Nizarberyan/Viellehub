@@ -18,7 +18,7 @@ require_once '../../models/Student.php';
                 Login
             </h2>
 
-            <form action="" method="POST" class="space-y-4">
+            <form action="../../models/Auth.php?method=login" method="POST" class="space-y-4">
                 <div>
                     <label for="email" class="block text-gray-700 text-sm font-bold mb-2">
                         Email Address

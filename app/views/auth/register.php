@@ -1,34 +1,4 @@
 <?php
-require_once '../../models/Student.php';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $first_name = $_POST['first_name'];
-    $last_name = $_POST['last_name'];
-    $email = $_POST['email'];
-    $role = $_POST['role'];
-    $password = $_POST['password'];
-    $confirm_password = $_POST['confirm_password'];
-
-    if ($password !== $confirm_password) {
-        echo "Passwords do not match";
-    } else {
-       try {
-           $student = new Student();
-           $result = $student->CreateUser($email, $password, $first_name, $last_name, $role, 'pending');
-           echo "User created successfully";
-       } catch (PDOException $e) {
-           echo $e->getMessage();
-       }
-       if ($result === true) {
-           header('Location: login.php');
-       }
-       else {
-           echo "An error occurred";
-       }
-
-    }
-
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 Create Your Account
             </h2>
 
-            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST" class="space-y-4">
+            <form action="../../models/Auth.php?method=register" method="POST" class="space-y-4">
                 <div class="grid md:grid-cols-2 gap-4">
                     <div>
                         <label for="firstName" class="block text-gray-700 text-sm font-bold mb-2">

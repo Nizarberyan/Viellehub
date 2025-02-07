@@ -22,8 +22,6 @@ abstract class BaseModel
     protected $created_at;
     protected $updated_at;
 
-    public abstract function createUser($email, $password, $first_name, $last_name, $role, $status);
 
-    public abstract function updateUser($id, $email, $password, $first_name, $last_name, $role, $status);
 
 }
