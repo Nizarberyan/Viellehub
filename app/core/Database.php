@@ -5,7 +5,7 @@ class Database
     private $host = "nizar.mysql.database.azure.com";
     private $port = "3306";
     private $user = "nizar";
-    private $password = "Scrutiny2-Hyperlink9-Confined8-Vixen6-Hatbox5";
+    private $password = "Moneybags3-Stubbly6-Backfield0-Afar4-Muppet9";
     private $database = "veillehub";
     private $ssl_ca = "/DigiCertGlobalRootCA.crt.pem";
     public $connection;

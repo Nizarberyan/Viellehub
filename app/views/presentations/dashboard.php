@@ -1,3 +1,7 @@
+<?php
+session_start();
+die(var_dump($_SESSION['user_role']));
+?>
 <!DOCTYPE html>
 <html lang="en" x-data="{
     sidebarOpen: false,
