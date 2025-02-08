@@ -1,3 +1,6 @@
+<?php
+session_start()
+?>
 <!DOCTYPE html>
 <html lang="en" x-data="{ sidebarOpen: false, subjectOpen: false }">
 <head>
@@ -26,16 +29,7 @@
             </div>
 
             <!-- Desktop Links -->
-            <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
-                <a href="../../../public/index.php"
-                   class="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium">
-                    Home
-                </a>
-                <a href="dashboard.php"
-                   class="text-blue-600 border-b-2 border-blue-600 px-3 py-2 text-sm font-medium">
-                    Dashboard
-                </a>
-            </div>
+
 
             <!-- Right side (icons) -->
             <div class="hidden sm:ml-6 sm:flex sm:items-center">
@@ -115,6 +109,16 @@
                         <span class="font-medium">Dashboard</span>
                     </a>
                 </li>
+                <li>
+                <?php if ($_SESSION['user_role'] == 'teacher') {
+                    echo '<li>
+                    <a href="https://www.instagram.com"
+                       class="flex items-center p-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">
+                        <i class="ri-dashboard-line mr-3 text-xl"></i>
+                        <span class="font-medium">Dashboard</span>
+                    </a>
+                </li>';
+                }?>
                 <li>
                     <a href="../presentations/calendar.php"
                        class="flex items-center p-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">

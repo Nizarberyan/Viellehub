@@ -32,7 +32,7 @@
 
                 </div>
 
-                <!-- Right Side: Feature Highlights -->
+
                 <div class="p-8 bg-white">
                     <h2 class="text-2xl font-bold text-gray-800 mb-6">Key Features</h2>
                     <ul class="space-y-4">
