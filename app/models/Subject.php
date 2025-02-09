@@ -3,12 +3,6 @@ require_once '../core/Database.php';
 
 class subject
 {
-    private $id;
-    private $title;
-    private $description;
-    private $suggested_by;
-    private $status;
-    private $resources;
     private $db;
     private $connection;
 
@@ -17,8 +11,8 @@ class subject
         $this->db = new Database();
         $this->connection = $this->db->connection;
     }
-public function CreateSubject()
-    {
+public function CreateSubject(): void
+{
         $this->title = $_POST['title'] ?? '';
         $this->description = $_POST['description'] ?? '';
         $this->suggested_by = $_SESSION['user_id'] ?? '';
@@ -40,11 +34,20 @@ public function CreateSubject()
          }
     }
     public function renderSubjects()
-    {
-        $sql = "SELECT * FROM subjects";
+{
+    try {
+        $sql = "SELECT s.*, 
+                   u.first_name, 
+                   u.last_name, 
+                   CONCAT(u.first_name, ' ', u.last_name) AS creator_full_name
+            FROM subjects s
+            LEFT JOIN users u ON s.suggested_by = u.id";
         $stmt = $this->connection->prepare($sql);
         $stmt->execute();
-        return $subjects = $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
+    catch (PDOException $e) {
+        die("Error: " . $e->getMessage());
+    }
+}
 }

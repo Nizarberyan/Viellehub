@@ -318,39 +318,13 @@ session_start();
             alert('Failed to submit. Please try again.');
         }
     });
-
-    // Search + Filter
-   /* const searchInput = document.getElementById('searchSubjects');
-
-    function filterSubjects() {
-        const searchTerm = searchInput.value.toLowerCase();
-
-        const subjectCards = document.querySelectorAll('.subject-card');
-
-        subjectCards.forEach(card => {
-            const subjectName = card.querySelector('h2').textContent.toLowerCase();
-            const departmentTag = card.querySelector('span').textContent.toLowerCase();
-
-            const matchesSearch = subjectName.includes(searchTerm);
-            const matchesDepartment =
-                !selectedDepartment || departmentTag.includes(selectedDepartment);
-
-            card.style.display =
-                matchesSearch && matchesDepartment ? 'block' : 'none';
-        });
-    }*/
-
-    /*const debouncedFilterSubjects = debounce(filterSubjects, 300);
-    searchInput.addEventListener('input', debouncedFilterSubjects);
-    departmentFilter.addEventListener('change', filterSubjects);
-*/
     document.addEventListener('DOMContentLoaded', function () {
         fetch('../../controllers/SubjectController.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ method: 'renderSubjects' })
+            body: JSON.stringify({method: 'renderSubjects'})
         })
             .then(response => response.json())
             .then(data => {
@@ -371,7 +345,7 @@ session_start();
                     );
 
                     let approvalInfo = subject.approved_by
-                        ? `Approved by: ${subject.approved_by}`
+                        ? `Approved by: ${subject.creator_full_name}`
                         : 'Not approved yet';
 
                     subjectCard.innerHTML = `
@@ -389,6 +363,29 @@ session_start();
             })
             .catch(error => console.error('Error:', error));
     });
+
+    // Search + Filter
+    const searchInput = document.getElementById('searchSubjects');
+
+    function filterSubjects() {
+        const searchTerm = searchInput.value.toLowerCase();
+
+        const subjectCards = document.querySelectorAll('.subject-card');
+
+        subjectCards.forEach(card => {
+            const subjectName = card.querySelector('h2').textContent.toLowerCase();
+
+            const matchesSearch = subjectName.includes(searchTerm);
+
+            card.style.display =
+                matchesSearch ? 'block' : 'none';
+        });
+    }
+
+    const debouncedFilterSubjects = debounce(filterSubjects, 300);
+    searchInput.addEventListener('input', debouncedFilterSubjects);
+
+
 </script>
 </body>
 </html>
