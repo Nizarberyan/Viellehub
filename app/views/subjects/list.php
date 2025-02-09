@@ -1,6 +1,12 @@
 <?php
 session_start();
-
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ../auth/login.php');
+    exit();
+}
+elseif ($_SESSION['user_role'] !== 'teacher') {
+    header ('Location: ../errors/403.php');
+}
 ?>
 <!DOCTYPE html>
 <html lang="en" x-data="{ sidebarOpen: false }">

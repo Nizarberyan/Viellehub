@@ -12,7 +12,7 @@ class Auth
         session_start();
     }
 
-    public function register()
+    public function register(): void
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: ../views/auth/register.php');
@@ -75,7 +75,7 @@ class Auth
         }
     }
 
-    public function login()
+    public function login(): void
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: ../views/auth/login.php');
@@ -136,7 +136,7 @@ class Auth
         }
     }
 
-    public function logout()
+     public function logout() : void
     {
         $_SESSION = array();
         session_destroy();
@@ -158,7 +158,7 @@ class Auth
         exit();
     }
 
-    private function emailExists($email)
+    private function emailExists($email): bool
     {
         try {
             $sql = "SELECT COUNT(*) FROM users WHERE email = :email";

@@ -74,14 +74,16 @@
                             x-transition
                             class="pl-6 space-y-2 mt-2 border-l-2 border-gray-100"
                     >
-                        <li>
-                            <a
-                                    href="list.php"
-                                    class="block p-2 text-sm text-gray-600 hover:text-blue-600"
-                            >
-                                Subject List
-                            </a>
-                        </li>
+                        <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'teacher') : ?>
+                            <li>
+                                <a
+                                        href="list.php"
+                                        class="block p-2 text-sm text-gray-600 hover:text-blue-600"
+                                >
+                                    Subject List
+                                </a>
+                            </li>
+                        <?php endif; ?>
                         <li>
                             <a
                                     href="manage.php"
