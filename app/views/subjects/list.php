@@ -1,3 +1,7 @@
+<?php
+session_start();
+
+?>
 <!DOCTYPE html>
 <html lang="en" x-data="{ sidebarOpen: false }">
 <head>
@@ -112,7 +116,7 @@
     <!-- Main Content Area -->
     <!-- Add top padding (pt-16) on small screens to avoid content being hidden behind the mobile header.
          Remove left margin (ml-64) for small screens; keep it for md+ screens. -->
-    <div class="flex-1 p-8 pt-16 md:pt-8 md:ml-64">
+    <div class="flex-1 p-8 pt-16 md:pt-8">
         <div class="container mx-auto">
             <div class="flex flex-wrap items-center gap-4 mb-8">
                 <!-- Title -->
@@ -135,34 +139,13 @@
                         <i class="ri-search-line absolute left-3 top-3 text-gray-400"></i>
                     </div>
 
-                    <!-- Department dropdown -->
-                    <select
-                            id="departmentFilter"
-                            aria-label="Filter subjects by department"
-                            class="px-3 py-2 border rounded-lg w-full sm:w-auto max-w-xs"
-                    >
-                        <option value="">All Departments</option>
-                        <option value="computer-science">Computer Science</option>
-                        <option value="mathematics">Mathematics</option>
-                        <option value="physics">Physics</option>
-                        <option value="biology">Biology</option>
-                    </select>
                 </div>
             </div>
 
             <!-- Grid of subjects -->
             <div id="subjectsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <!-- Dynamically populated subject cards will go here -->
-                <div class="subject-card bg-white rounded-lg shadow-md p-6">
-                    <h2 class="text-xl font-bold mb-2">Software Engineering</h2>
-                    <span class="text-sm text-gray-500">Computer Science</span>
-                    <button
-                            class="select-subject-btn mt-4 w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-                            data-subject-name="Software Engineering"
-                    >
-                        Select Subject
-                    </button>
-                </div>
+
                 <!-- Add more subject cards as needed -->
             </div>
 
@@ -236,7 +219,7 @@
     // Utility Functions
     function debounce(func, delay) {
         let timeoutId;
-        return function() {
+        return function () {
             const context = this;
             const args = arguments;
             clearTimeout(timeoutId);
@@ -256,10 +239,10 @@
 
     // Simulate team members (in real app, this might come from a backend)
     const teamMembers = [
-        { id: 1, name: 'John Doe' },
-        { id: 2, name: 'Alice Smith' },
-        { id: 3, name: 'Bob Johnson' },
-        { id: 4, name: 'Emma Brown' }
+        {id: 1, name: 'John Doe'},
+        {id: 2, name: 'Alice Smith'},
+        {id: 3, name: 'Bob Johnson'},
+        {id: 4, name: 'Emma Brown'}
     ];
 
     function populateTeamMembers() {
@@ -337,12 +320,11 @@
     });
 
     // Search + Filter
-    const searchInput = document.getElementById('searchSubjects');
-    const departmentFilter = document.getElementById('departmentFilter');
+   /* const searchInput = document.getElementById('searchSubjects');
 
     function filterSubjects() {
         const searchTerm = searchInput.value.toLowerCase();
-        const selectedDepartment = departmentFilter.value.toLowerCase();
+
         const subjectCards = document.querySelectorAll('.subject-card');
 
         subjectCards.forEach(card => {
@@ -356,11 +338,57 @@
             card.style.display =
                 matchesSearch && matchesDepartment ? 'block' : 'none';
         });
-    }
+    }*/
 
-    const debouncedFilterSubjects = debounce(filterSubjects, 300);
+    /*const debouncedFilterSubjects = debounce(filterSubjects, 300);
     searchInput.addEventListener('input', debouncedFilterSubjects);
     departmentFilter.addEventListener('change', filterSubjects);
+*/
+    document.addEventListener('DOMContentLoaded', function () {
+        fetch('../../controllers/SubjectController.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ method: 'renderSubjects' })
+        })
+            .then(response => response.json())
+            .then(data => {
+                let subjectsGrid = document.getElementById('subjectsGrid');
+                data.forEach(subject => {
+                    let subjectCard = document.createElement('div');
+
+                    subjectCard.classList.add(
+                        'subject-card',
+                        'p-6',
+                        'bg-white',
+                        'rounded-xl',
+                        'shadow-lg',
+                        'hover:shadow-xl',
+                        'transition',
+                        'duration-300',
+                        'ease-in-out'
+                    );
+
+                    let approvalInfo = subject.approved_by
+                        ? `Approved by: ${subject.approved_by}`
+                        : 'Not approved yet';
+
+                    subjectCard.innerHTML = `
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">${subject.title}</h2>
+                    <p class="text-gray-700 mb-2">${subject.description}</p>
+                    <p class="text-gray-600 mb-2"><strong>Status:</strong> ${subject.status}</p>
+                    <p class="text-gray-600 mb-4"><strong>Approval:</strong> ${approvalInfo}</p>
+                    <button class="select-subject-btn bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-xl w-full">
+                        Select Subject
+                    </button>
+                `;
+                    subjectsGrid.appendChild(subjectCard);
+                });
+                console.log(data);
+            })
+            .catch(error => console.error('Error:', error));
+    });
 </script>
 </body>
 </html>

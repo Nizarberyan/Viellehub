@@ -14,13 +14,26 @@
 <body class="bg-gray-100">
 
 <div class="flex min-h-screen">
+
+    <header class="flex items-center justify-between bg-white shadow-md p-4 md:hidden">
+
+        <img src="../../../public/logo-white.png" alt="Logo" class="h-8 w-auto">
+        <button
+                class="text-gray-600 focus:outline-none"
+                @click="sidebarOpen = !sidebarOpen"
+                aria-label="Toggle sidebar"
+        >
+            <i class="ri-menu-line text-2xl"></i>
+        </button>
+    </header>
     <!-- Sidebar -->
     <div
             class="fixed inset-y-0 left-0 z-30 w-64 bg-white shadow-md transform transition-transform duration-200
                md:static md:translate-x-0"
             :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'">
-        <div class="p-6 border-b">
-            <h2 class="text-2xl font-bold text-blue-600">Menu</h2>
+        <div class="p-6 border-b flex items-center justify-center">
+            <!-- Logo instead of "Menu" text -->
+            <img src="../../../public/logo-white.png" alt="Logo" class="h-12 w-auto">
         </div>
         <nav class="p-4">
             <ul class="space-y-2">
@@ -113,7 +126,7 @@
                     </h2>
 
                     <!-- Suggestion Form -->
-                    <form id="suggestionForm" class="space-y-6">
+                    <form action="../../controllers/SubjectController.php?method=create" method="POST" id="suggestionForm" class="space-y-6">
                         <div>
                             <label class="block text-gray-700 font-semibold mb-2" for="title">
                                 Subject Title
@@ -141,32 +154,13 @@
                                     placeholder="Provide a detailed description of the proposed subject"
                             ></textarea>
                         </div>
-
                         <div>
-                            <label class="block text-gray-700 font-semibold mb-2" for="department">
-                                Department
-                            </label>
-                            <select
-                                    id="department"
-                                    name="department"
-                                    required
-                                    class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            >
-                                <option value="">Select Department</option>
-                                <option value="computer-science">Computer Science</option>
-                                <option value="mathematics">Mathematics</option>
-                                <option value="physics">Physics</option>
-                                <option value="biology">Biology</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label class="block text-gray-700 font-semibold mb-2" for="references">
+                            <label class="block text-gray-700 font-semibold mb-2" for="resources">
                                 References/Resources
                             </label>
                             <textarea
-                                    id="references"
-                                    name="references"
+                                    id="resources"
+                                    name="resources"
                                     rows="3"
                                     class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     placeholder="Optional: List any relevant books, papers, or resources"
@@ -306,8 +300,8 @@
 
 <script>
     // Suggestion Form Submission
-    document.getElementById('suggestionForm').addEventListener('submit', function(e) {
-        e.preventDefault();
+    /*document.getElementById('suggestionForm').addEventListener('submit', function(e) {
+
 
         const formData = {
             title: document.getElementById('title').value,
@@ -324,7 +318,7 @@
 
         // Show success notification
         alert('Subject suggestion submitted successfully!');
-    });
+    });*/
 
     // Assign Students Modal Handling
     const assignStudentsBtn = document.getElementById('assignStudentsBtn');

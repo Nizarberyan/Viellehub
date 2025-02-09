@@ -17,9 +17,10 @@
 <body class="bg-gray-100">
 <div class="flex flex-col min-h-screen md:flex-row">
 
-    <!-- Mobile Header / Toggle -->
+
     <header class="flex items-center justify-between bg-white shadow-md p-4 md:hidden">
-        <h2 class="text-xl font-bold text-blue-600">Menu</h2>
+
+        <img src="../../../public/logo-white.png" alt="Logo" class="h-8 w-auto">
         <button
                 class="text-gray-600 focus:outline-none"
                 @click="sidebarOpen = !sidebarOpen"
@@ -34,8 +35,9 @@
             class="fixed inset-y-0 left-0 w-64 bg-white shadow-md transform md:transform-none md:relative z-30 transition-transform duration-200"
             :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
     >
-        <div class="p-6 border-b md:border-none">
-            <h2 class="text-2xl font-bold text-blue-600">Menu</h2>
+        <div class="p-6 border-b flex items-center justify-center">
+            <!-- Logo instead of "Menu" text -->
+            <img src="../../../public/logo-white.png" alt="Logo" class="h-12 w-auto">
         </div>
         <nav class="p-4">
             <ul class="space-y-2">
@@ -224,9 +226,9 @@
                             </div>
                         </td>
                         <td class="p-4">
-              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                Computer Science
-              </span>
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                Computer Science
+                            </span>
                         </td>
                         <td class="p-4 text-sm text-gray-500">
                             <div class="flex -space-x-2">
@@ -240,9 +242,9 @@
                             </div>
                         </td>
                         <td class="p-4">
-              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                Active
-              </span>
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                Active
+                            </span>
                         </td>
                         <td class="p-4">
                             <div class="flex items-center space-x-2">

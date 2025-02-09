@@ -19,61 +19,6 @@ session_start()
 </head>
 <body class="bg-gray-100">
 
-<!-- Top Navigation -->
-<nav class="bg-white shadow-md">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <!-- Left side (logo & site title) -->
-            <div class="flex items-center">
-                <h1 class="text-2xl font-bold text-blue-600">University Presentations</h1>
-            </div>
-
-            <!-- Desktop Links -->
-
-
-            <!-- Right side (icons) -->
-            <div class="hidden sm:ml-6 sm:flex sm:items-center">
-                <button type="button"
-                        class="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                    <span class="sr-only">View notifications</span>
-                    <svg class="h-6 w-6"
-                         xmlns="http://www.w3.org/2000/svg"
-                         fill="none"
-                         viewBox="0 0 24 24"
-                         stroke="currentColor">
-                        <path stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118
-                                     14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0
-                                     10-4 0v.341C7.67 6.165 6 8.388 6
-                                     11v3.159c0 .538-.214 1.055-.595
-                                     1.436L4 17h5m6 0v1a3 3 0
-                                     11-6 0v-1m6 0H9"/>
-                    </svg>
-                </button>
-            </div>
-
-            <!-- Hamburger Menu (mobile) -->
-            <div class="flex items-center sm:hidden">
-                <button @click="sidebarOpen = !sidebarOpen"
-                        class="p-2 rounded-md text-gray-600 hover:text-blue-600 hover:bg-gray-100 focus:outline-none">
-                    <span class="sr-only">Open sidebar</span>
-                    <svg class="h-6 w-6"
-                         xmlns="http://www.w3.org/2000/svg"
-                         fill="none"
-                         viewBox="0 0 24 24"
-                         stroke="currentColor">
-                        <path stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              d="M4 6h16M4 12h16M4 18h16"/>
-                    </svg>
-                </button>
-            </div>
-        </div>
-    </div>
-</nav>
 
 <!-- Main Container: Sidebar + Content -->
 <div class="flex">
