@@ -133,8 +133,7 @@
                 <h2 class="text-2xl font-semibold text-gray-800">10. Contact Information</h2>
                 <p class="text-gray-600">For any questions about this Privacy Policy, please contact:</p>
                 <ul class="list-disc pl-6 text-gray-600">
-                    <li>Email: [Your Institution's Contact Email]</li>
-                    <li>Address: [Your Institution's Address]</li>
+                    <li>Email: nizarberiane43@gmail.com</li>
                 </ul>
             </section>
 

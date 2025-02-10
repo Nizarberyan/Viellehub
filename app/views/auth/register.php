@@ -110,7 +110,7 @@
                                 required
                                 class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
                             <label for="terms" class="ml-2 block text-sm text-gray-900">
-                                I agree to the <a href="../legal/privacy-policy" class="text-blue-600 hover:text-blue-800 underline">Terms and Conditions</a>
+                                I agree to the <a href="../legal/privacy-policy.php" class="text-blue-600 hover:text-blue-800 underline">Terms and Conditions</a>
                             </label>
                         </div>
                     </div>
