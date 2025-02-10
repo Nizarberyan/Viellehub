@@ -324,7 +324,7 @@ elseif ($_SESSION['user_role'] !== 'teacher') {
             alert('Failed to submit. Please try again.');
         }
     });
-    document.addEventListener('DOMContentLoaded', function () {
+   document.addEventListener('DOMContentLoaded', function () {
         fetch('../../controllers/SubjectController.php', {
             method: 'POST',
             headers: {
@@ -339,37 +339,40 @@ elseif ($_SESSION['user_role'] !== 'teacher') {
                     let subjectCard = document.createElement('div');
 
                     subjectCard.classList.add(
-                        'subject-card',
-                        'p-6',
-                        'bg-white',
-                        'rounded-xl',
-                        'shadow-lg',
-                        'hover:shadow-xl',
+                        'border',
+                        'rounded-lg',
+                        'p-4',
+                        'hover:bg-gray-50',
                         'transition',
-                        'duration-300',
-                        'ease-in-out'
+                        'bg-white' // Ensure background color class is added
                     );
 
-                    let approvalInfo = subject.approved_by
-                        ? `Approved by: ${subject.creator_full_name}`
-                        : 'Not approved yet';
-
                     subjectCard.innerHTML = `
-                    <h2 class="text-2xl font-bold text-gray-800 mb-2">${subject.title}</h2>
-                    <p class="text-gray-700 mb-2">${subject.description}</p>
-                    <p class="text-gray-600 mb-2"><strong>Status:</strong> ${subject.status}</p>
-                    <p class="text-gray-600 mb-4"><strong>Approval:</strong> ${approvalInfo}</p>
-                    <button class="select-subject-btn bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-xl w-full">
-                        Select Subject
-                    </button>
-                `;
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="font-semibold text-gray-800">${subject.title}</h3>
+                            <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs">${subject.status}</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-2">
+                            ${subject.description}
+                        </p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">Suggested by: ${subject.creator_full_name}</span>
+                            <div class="space-x-2">
+                                <button class="text-green-500 hover:text-green-600" title="Approve">
+                                    <i class="ri-check-line"></i>
+                                </button>
+                                <button class="text-red-500 hover:text-red-600" title="Reject">
+                                    <i class="ri-close-line"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
                     subjectsGrid.appendChild(subjectCard);
                 });
                 console.log(data);
             })
             .catch(error => console.error('Error:', error));
     });
-
     // Search + Filter
     const searchInput = document.getElementById('searchSubjects');
 

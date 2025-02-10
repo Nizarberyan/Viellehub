@@ -188,48 +188,7 @@
                     </h2>
 
                     <!-- Suggestion Cards -->
-                    <div class="space-y-4">
-                        <div class="border rounded-lg p-4 hover:bg-gray-50 transition">
-                            <div class="flex justify-between items-center mb-2">
-                                <h3 class="font-semibold text-gray-800">Machine Learning Ethics</h3>
-                                <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs">Pending</span>
-                            </div>
-                            <p class="text-sm text-gray-600 mb-2">
-                                An exploration of ethical considerations in AI and machine learning development.
-                            </p>
-                            <div class="flex justify-between items-center">
-                                <span class="text-sm text-gray-500">Computer Science</span>
-                                <div class="space-x-2">
-                                    <button class="text-green-500 hover:text-green-600" title="Approve">
-                                        <i class="ri-check-line"></i>
-                                    </button>
-                                    <button class="text-red-500 hover:text-red-600" title="Reject">
-                                        <i class="ri-close-line"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="border rounded-lg p-4 hover:bg-gray-50 transition">
-                            <div class="flex justify-between items-center mb-2">
-                                <h3 class="font-semibold text-gray-800">Quantum Computing Basics</h3>
-                                <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs">Pending</span>
-                            </div>
-                            <p class="text-sm text-gray-600 mb-2">
-                                Introductory course covering fundamental principles of quantum computing.
-                            </p>
-                            <div class="flex justify-between items-center">
-                                <span class="text-sm text-gray-500">Physics</span>
-                                <div class="space-x-2">
-                                    <button class="text-green-500 hover:text-green-600" title="Approve">
-                                        <i class="ri-check-line"></i>
-                                    </button>
-                                    <button class="text-red-500 hover:text-red-600" title="Reject">
-                                        <i class="ri-close-line"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                    <div id="SubjectsContainer" class="space-y-4">
                     </div>
 
                     <!-- Assign Students Modal Trigger -->
@@ -335,6 +294,65 @@
     cancelAssignBtn.addEventListener('click', () => {
         assignStudentsModal.classList.remove('flex');
         assignStudentsModal.classList.add('hidden');
+
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        fetch('../../controllers/SubjectController.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({method: 'renderSubjects'})
+        })
+            .then(response => response.json())
+            .then(data => {
+                let subjectsGrid = document.getElementById('SubjectsContainer');
+                let subjectsToShow = data.slice(-4);
+
+                subjectsToShow.forEach(subject => {
+                    let subjectCard = document.createElement('div');
+
+                    subjectCard.classList.add(
+                        'border',
+                        'rounded-lg',
+                        'p-4',
+                        'hover:bg-gray-50',
+                        'transition'
+                    );
+
+                    subjectCard.innerHTML = `
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="font-semibold text-gray-800">${subject.title}</h3>
+                            <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs">${subject.status}</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-2">
+                            ${subject.description}
+                        </p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">Suggested by: ${subject.creator_full_name}</span>
+                            <div class="space-x-2">
+                                <button class="text-green-500 hover:text-green-600" title="Approve">
+                                    <i class="ri-check-line"></i>
+                                </button>
+                                <button class="text-red-500 hover:text-red-600" title="Reject">
+                                    <i class="ri-close-line"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    subjectsGrid.appendChild(subjectCard);
+                });
+
+                // Add a button to view all subjects
+                let viewAllButton = document.createElement('a');
+                viewAllButton.href = 'list.php';
+                viewAllButton.classList.add('bg-blue-500', 'text-white', 'px-4', 'py-2', 'rounded', 'hover:bg-blue-600', 'transition', 'block', 'text-center', 'mt-4');
+                viewAllButton.textContent = 'View All Subjects';
+                subjectsGrid.appendChild(viewAllButton);
+
+                console.log(data);
+            })
+            .catch(error => console.error('Error:', error));
     });
 </script>
 
